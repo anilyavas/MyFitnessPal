@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import FoodListItem from '../components/FoodListItem';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <FoodListItem />
+      <FoodListItem item={{ label: 'Pizza', cal: '75', brand: 'Dominos' }} />
+      <FoodListItem item={{ label: 'Apple', cal: '50', brand: 'Generic' }} />
     </View>
   );
 }
@@ -15,5 +16,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
     padding: 10,
+    gap: 5,
   },
 });

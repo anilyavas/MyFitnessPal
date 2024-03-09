@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const FoodListItem = () => {
+const FoodListItem = ({ item }) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}>
-        <Text style={styles.text}>Pizza</Text>
-        <Text style={styles.secondText}>300 cal, Dominos</Text>
+        <Text style={styles.text}>{item.label}</Text>
+        <Text style={styles.secondText}>
+          {item.cal} cal, {item.brand}
+        </Text>
       </View>
       <AntDesign name='pluscircleo' size={24} color={'royalblue'} />
     </View>
