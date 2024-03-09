@@ -1,21 +1,55 @@
-import { Button, FlatList, StyleSheet, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  FlatList,
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+} from 'react-native';
 import FoodListItem from '../components/FoodListItem';
 import { useState } from 'react';
+import { gql, useLazyQuery } from '@apollo/client';
 
-const foodItems = [
-  { label: 'Pizza', cal: '75', brand: 'Dominos' },
-  { label: 'Apple', cal: '50', brand: 'Generic' },
-  { label: 'Coffee', cal: '100', brand: 'Americano' },
-  { label: 'Coffee', cal: '100', brand: 'Americano' },
-];
+const query = gql`
+  query search($ingr: String) {
+    search(ingr: $ingr) {
+      text
+      hints {
+        food {
+          label
+          brand
+          foodId
+          nutrients {
+            ENERC_KCAL
+          }
+        }
+      }
+    }
+  }
+`;
 
-export default function App() {
+export default function SearchScreen() {
   const [search, setSearch] = useState('');
 
+  const [runSearch, { data, loading, error }] = useLazyQuery(query, {
+    variables: { ingr: 'Pizza' },
+  });
+
   const performSearch = () => {
-    console.warn('searching for', search);
-    setSearch('');
+    runSearch({ variables: { ingr: search } });
+    //setSearch('');
   };
+
+  //if (loading) {
+  //  return <ActivityIndicator />;
+  //}
+
+  if (error) {
+    return <Text>Failed to search</Text>;
+  }
+
+  const items = data?.search?.hints || [];
 
   return (
     <View style={styles.container}>
@@ -26,9 +60,11 @@ export default function App() {
         onChangeText={setSearch}
       />
       {search && <Button title='Search' onPress={performSearch} />}
+      {loading && <ActivityIndicator />}
       <FlatList
         contentContainerStyle={{ gap: 5 }}
-        data={foodItems}
+        data={items}
+        ListEmptyComponent={() => <Text>Search a food</Text>}
         renderItem={({ item }) => <FoodListItem item={item} />}
       />
     </View>
