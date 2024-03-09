@@ -9,6 +9,9 @@ const foodItems = [
   { label: 'Coffee', cal: '100', brand: 'Americano' },
 ];
 
+// application id 80a7aa05
+// api key 2d70dcf7025bf16962d7b02e3648bbe1
+
 export default function App() {
   const [search, setSearch] = useState('');
 
