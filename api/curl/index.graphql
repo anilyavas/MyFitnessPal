@@ -73,7 +73,7 @@ type QualifiersEntry {
   uri: String
 }
 
-type Root {
+type SearchResult {
   _links: Links
   hints: [HintsEntry]
   parsed: [ParsedEntry]
@@ -87,9 +87,10 @@ type ServingSizesEntry {
 }
 
 type Query {
-  search(app_id: String, app_key: String, ingr: String): Root
+  search(ingr: String): SearchResult
     @rest(
-      endpoint: "https://api.edamam.com/api/food-database/v2/parser"
+      endpoint: "https://api.edamam.com/api/food-database/v2/parser?app_id=$app_id&app_key=$app_key"
       headers: [{ name: "accept", value: "application/json" }]
+      configuration: "edamam"
     )
 }
