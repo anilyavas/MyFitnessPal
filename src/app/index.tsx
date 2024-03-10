@@ -1,7 +1,27 @@
 import { Link } from 'expo-router';
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Button,
+  ActivityIndicator,
+} from 'react-native';
 import FoodListItem from '../components/FoodListItem';
+import { gql, useQuery } from '@apollo/client';
 
+const query = gql`
+  query MyQuery($date: Date!, $user_id: String!) {
+    foodLogsForDate(date: $date, user_id: $user_id) {
+      id
+      label
+      user_id
+      kcal
+      food_id
+      created_at
+    }
+  }
+`;
 const foodItems = [
   {
     food: { label: 'Pizza', nutrients: { ENERC_KCAL: 100 }, brand: 'Dominos' },
@@ -12,6 +32,21 @@ const foodItems = [
 ];
 
 export default function HomeScreen() {
+  const user_id = 'vadim';
+  const { data, loading, error } = useQuery(query, {
+    variables: {
+      date: new Date(),
+      username: user_id,
+    },
+  });
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+  if (error) {
+    return <Text>Failed to fetch data</Text>;
+  }
+  console.log(data);
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
