@@ -39,7 +39,6 @@ export default function HomeScreen() {
   if (error) {
     return <Text>Failed to fetch data</Text>;
   }
-  console.log(data);
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
